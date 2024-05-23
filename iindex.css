@@ -1,0 +1,52 @@
+/* Container styling */
+#da {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin: 20px;
+}
+
+/* User element styling */
+#da div {
+    border: 1px solid #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #5117fd;
+}
+
+/* Paragraph styling within user element */
+#da div p {
+    margin: 5px 0;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+}
+
+/* Button styling */
+button {
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* Delete button specific styling */
+button.delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+/* Update button specific styling */
+button.update-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Button hover effects */
+button.delete-btn:hover {
+    background-color: #ff1a1a;
+}
+
+button.update-btn:hover {
+    background-color: #45a049;
+}

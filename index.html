@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="form-container">
+        <div class="toggle-buttons">
+            <button id="showRegister">Register</button>
+            <button id="showLogin">Login</button>
+        </div>
+
+        <form id="registerForm" class="form" onsubmit="myfun(event)">
+            <h2>Register</h2>
+            <label for="fname">Name:</label>
+            <input type="text" name="fname" id="fname" required>
+            <br>
+            <label for="femail">Email:</label>
+            <input type="email" name="femail" id="femail" required>
+            <br>
+            <label for="fmobile">Mobile:</label>
+            <input type="number" name="fmobile" id="fmobile" pattern="\d{10}" title="Mobile number must be exactly 10 digits" required>
+            <br>
+            <label for="fdate">DOB:</label>
+            <input type="date" name="fdate" id="fdate" required>
+            <br>
+            <div class="gender-group">
+                <label>Gender:</label>
+                <label for="male"><input type="radio" name="gender" value="male" id="male" required> Male</label>
+                <label for="female"><input type="radio" name="gender" value="female" id="female"> Female</label>
+                <label for="notspecified"><input type="radio" name="gender" value="Not Specified" id="notspecified"> Not Specified</label>
+            </div>
+            <input type="submit" value="Register">
+        </form>
+
+        <form id="loginForm" class="form" onsubmit="Login(event)">
+            <h2>Login</h2>
+            <label for="login_email">Email:</label>
+            <input type="email" name="femail" id="login_email" required>
+            <br>
+            <label for="login_mobile">Mobile:</label>
+            <input type="number" name="fmobile" id="login_mobile" pattern="\d{10}" title="Mobile number must be exactly 10 digits" required>
+            <br>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+
+    <script>
+       function myfun(event) {
+           event.preventDefault(); // Prevent the default form submission
+
+           const form = event.target;
+           const formData = new FormData(form);
+
+           // Convert form data to a plain object
+           const formOb = {};
+           formData.forEach((value, key) => {
+               formOb[key] = value;
+               
+           });
+
+           // Convert the object to a JSON string
+           const jsonData = JSON.stringify(formOb);
+
+           // Define the URL to send the data to
+           const url = 'http://localhost:3000/users';
+
+           // Send the POST request
+           fetch(url, {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json'
+               },
+               body: jsonData
+           })
+           .then(response => response.json())
+           .then(data => {
+               console.log('Success:', data);
+           })
+           .catch(error => {
+               console.error('Error:', error);
+           });
+       }
+
+       function Login(event) {
+           event.preventDefault(); // Prevent the default form submission
+           const login = event.target;
+           const LoginForm= new FormData(login)
+           const lob={};
+           LoginForm.forEach((value,key)=>{
+              lob[key]=value;
+             
+           })
+        fetch('http://localhost:3000/users')
+        .then(response=>response.json())
+        .then(data=>{
+            let login= false;
+         data.forEach(users=>{
+          if(users.femail===lob.femail && users.fmobile===lob.fmobile){
+            login=true
+           
+          }  
+        
+        
+            
+         })
+         if(login){
+            window.location.href='Records.html'
+            }
+              if(!login){
+            alert("wrong Credential")
+          }
+        })
+        
+        .catch(error=>{
+            console.log(error)
+        })
+       }
+
+       document.getElementById('showRegister').addEventListener('click', () => {
+           document.getElementById('registerForm').style.display = 'block';
+           document.getElementById('loginForm').style.display = 'none';
+       });
+
+       document.getElementById('showLogin').addEventListener('click', () => {
+           document.getElementById('registerForm').style.display = 'none';
+           document.getElementById('loginForm').style.display = 'block';
+       });
+
+       // Initial state
+       document.getElementById('registerForm').style.display = 'block';
+       document.getElementById('loginForm').style.display = 'none';
+    </script>
+</body>
+</html>

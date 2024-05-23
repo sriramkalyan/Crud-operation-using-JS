@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Records</title>
+    <link rel="stylesheet" href="iindex.css">
+</head>
+<body>
+    <h1 id="da">
+      
+        
+    </h1>
+    <script>
+
+        fetch('http://localhost:3000/users')
+        .then(response=>response.json())
+        .then(data=>{
+            data.forEach(users=>{
+                const userElement=document.createElement('div')
+                userElement.innerHTML=`<p>Name:${users.fname}</p><p>Mobile:${users.fmobile}</p>
+                <p>Date:${users.fdate}</p> <p>Gender:${users.
+                    gender}</p>
+                <button class="delete-btn">Delete</button>
+        <button class="update-btn">Update</button>
+                `
+                document.getElementById("da").appendChild(userElement)
+                userElement.querySelector('.delete-btn').addEventListener('click',()=>{
+                userElement.remove();
+                fetch(`http://localhost:3000/users/${users.id}`,{
+                    method:'DELETE',
+                    headers: {
+                   'Content-Type': 'application/json'
+               },
+                })
+                })
+                
+                userElement.querySelector('.update-btn').addEventListener('click',()=>{
+                    const newName=prompt("New Name")
+                    const Mobile=prompt("Enter new Mobile")
+                    const Date=prompt("Enter new Date")
+                    const gender=prompt("Enter new gender")
+                    const update = {
+                        fname: newName,
+                        fmobile: Mobile,
+                        fdate: Date,
+                        gender: gender
+                         };
+                    fetch(`http://localhost:3000/users/${users.id}`,{
+                        method:'PUT',
+                        body:JSON.stringify(update),
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to update user');
+                        }
+                        // Optionally provide feedback to the user
+                        alert('User updated successfully!');
+                    })
+                    .catch(error => {
+                        console.error('Error updating user:', error);
+                        // Optionally provide error feedback to the user
+                        alert('An error occurred while updating the user.');
+                    });
+
+                })
+            })
+        })
+
+
+    </script>
+</body>
+</html>
